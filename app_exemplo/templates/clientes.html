@@ -1,0 +1,35 @@
+<html>
+    <h1>Olá mundo</h1>
+    Bem-vindo ao site django
+
+    <ul>
+        <a href="/"><li>Home</li></a>
+        <a href="/sobre"><li>Sobre</li></a>
+        <a href="/contato"><li>Contato</li></a>
+        <a href="/planos"><li>Planos</li></a>
+    </ul>
+
+    <h2>Clientes</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        <label>Nome: </label> <input name="nome" type="text">
+        <label>Telefone: </label> <input name="telefone" type="text">
+        <label>Endereco: </label> <input name="endereco" type="text">
+        <label>Cpf: </label> <input name="cpf" type="text">
+        <label>Data Nasc: </label> <input name="data_nasc" type="date">
+        <button type="submit">Enviar</button>
+    </form>
+
+    <table style="border: solid 2px">
+        {% for cliente in clientes %}
+        <tr>
+            <td style="border: solid 1px">{{cliente.nome}}</td>
+            <td style="border: solid 1px">{{cliente.telefone}}</td>
+            <td style="border: solid 1px">{{cliente.endereco}}</td>
+            <td style="border: solid 1px">{{cliente.cpf}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</html>

@@ -1,0 +1,33 @@
+<html>
+    <h1>Olá mundo</h1>
+    Bem-vindo ao site django
+
+    <ul>
+        <a href="/"><li>Home</li></a>
+        <a href="/sobre"><li>Sobre</li></a>
+        <a href="/contato"><li>Contato</li></a>
+        <a href="/planos"><li>Planos</li></a>
+    </ul>
+
+    <h2>Vendas</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        
+        {{ form.as_p }}
+
+        <button type="submit">Enviar</button>
+    </form>
+
+    <table style="border: solid 2px">
+        {% for venda in vendas %}
+        <tr>
+            <td style="border: solid 1px">{{venda.cliente}}</td>
+            <td style="border: solid 1px">{{venda.produto}}</td>
+            <td style="border: solid 1px">{{venda.quantidade}}</td>
+            <td style="border: solid 1px">{{venda.preco}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</html>
