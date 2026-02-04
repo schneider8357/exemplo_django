@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
+
 class TiposDeConteudo(models.TextChoices):
     texto = "texto"
     video = "video"
@@ -11,16 +12,53 @@ class TiposDeConteudo(models.TextChoices):
     imagem = "imagem"
 
 
-class Conteudo(models.Model):
-    assunto = models.CharField(max_length=200)
-    tipo = models.CharField(choices=TiposDeConteudo.choices, default=TiposDeConteudo.texto)
-    autor = models.ForeignKey(User, on_delete=models.PROTECT)
-
-
 class Tema(models.Model):
     nome = models.CharField()
     adicionado_em = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.nome
+
+
+class Conteudo(models.Model):
+    assunto = models.CharField(max_length=200)
+    tipo = models.CharField(choices=TiposDeConteudo.choices, default=TiposDeConteudo.texto)
+    autor = models.ForeignKey(User, on_delete=models.PROTECT)
+    # ManyToMany -> n pra n
+    temas_relacionados = models.ManyToManyField(Tema, through="TemaToConteudo")
+
+    # Relacionar conteudo a tema principal, maximo 1 subtema, (pode ter temas relacionados)
+    # o mesmo tema pode aparecer em 2 "constelações" diferentes, de tema principal e subtema
+    # Anotações diferentes podem aparecer com base em: estamos vendo o conteúdo a partir do tema? ou do subtema?
+    # constelações de temas -> agrupam os conteudos
+
+
+class TemaToConteudo(models.Model):
+    # Esta tabela faz a associação entre Tema e Conteudo
+    tema = models.ForeignKey(Tema, on_delete=models.PROTECT)
+    conteudo = models.ForeignKey(Conteudo, on_delete=models.PROTECT)
+    nivel_aprofundamento = models.PositiveIntegerField(default=1)
+    nivel_associacao = models.PositiveIntegerField(default=1)
+
+
+class AssociacaoTema(models.Model):
+    # Esta tabela faz a associação entre dois Temas
+    #
+    # Define o quão próximo um tema fica do outro
+    #  
+    # TODO Depois, validar duplicidade de (tema1, tema2)
+    # (1, 2)
+    # (2, 1)
+    tema1 = models.ForeignKey(Tema, on_delete=models.PROTECT, related_name="tema1")
+    tema2 = models.ForeignKey(Tema, on_delete=models.PROTECT, related_name="tema2")
+    nivel_interconexao = models.PositiveIntegerField(default=1)
+    nivel_associacao = models.PositiveIntegerField(default=1)
+    
+    def __str__(self):
+        return f"{self.tema1} <-> {self.tema2}"
+    
+    class Meta:
+        unique_together = ["tema1", "tema2"]
 
 
 # feedbacks (comentarios)
@@ -59,6 +97,7 @@ class Tema(models.Model):
 # fake news e pseudociência
 
 
+
 # O que ensinar?
 # componentes, partes, estrutura das coisas 
 # ciclos (como nasce, vive e morre)
@@ -72,6 +111,7 @@ class Tema(models.Model):
 
 # MVP -> fechar um escopo 
 # conteudos posicionados em constelações, temas, universo
+
 
 
 # começar pelo ensino de medida de distancia (primeiro degrau)
