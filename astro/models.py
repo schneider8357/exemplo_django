@@ -124,4 +124,19 @@ class AssociacaoTema(models.Model):
 # objetivo é acessibilizar o conhecimento científico
 
 
+'''
+tutorial, grafo pequeno
+balao onde falas o que achas antes de assistie ao video que já é uma questao
+se termina - recompensa de desbloqueia de algo mesmo no caminho do que ja viu, comentarios de outras pessoas? Novos conteudo?
+ganha poder de tutor?
+
+sistema de recompensa - aura apos terminar missoes (compensaçao por progresso individual) 
+e tambem recompensar se ajudou mais os usuarios (compensaçao por interaçao)
+
+ficha do usuario:
+timeline
+os conteudos que ja viu
+a partir da decisao do usuario de onde começar, algumas opçoes de inicio se apagam outras nao, a depender do grau de associacao
+''' 
+
 
